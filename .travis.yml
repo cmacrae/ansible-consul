@@ -16,7 +16,7 @@ install:
 
 script:
   - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
-  - ansible-playbook tests/test.yml -i tests/inventory
+  - ansible-playbook tests/test.yml -i tests/inventory --connection=local --sudo
   - curl -s --fail http://localhost:8500 &>/dev/null
 
 notifications:
