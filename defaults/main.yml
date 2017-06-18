@@ -1,0 +1,22 @@
+---
+consul_group_name: consul
+consul_group_gid: 3000
+consul_user_name: consul
+consul_user_uid: 3000
+consul_user_home: /opt/consul
+consul_config_dir: "{{ consul_user_home }}/conf.d"
+consul_data_dir: "{{ consul_user_home }}/data"
+consul_version: 0.8.4
+consul_server: false
+consul_uri: "https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_linux_amd64.zip"
+consul_config_src: main.json.j2
+consul_service_file:
+  src: consul.service.j2
+  dest: /etc/systemd/system/consul.service
+
+consul_config:
+  datacenter: dc-1
+  data_dir: "{{ consul_data_dir }}"
+  log_level: INFO
+  node_name: node-1
+  server: "{{ consul_server }}"
