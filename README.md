@@ -1,5 +1,5 @@
 # Consul
-A no nonsense Ansible role to deploy [Consul](https://consul.io)
+A no nonsense Ansible role to deploy and configure [Consul](https://consul.io)
 
 ## Features
 ### Configure Consul with YAML
