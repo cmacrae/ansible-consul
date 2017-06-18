@@ -1,4 +1,5 @@
 # Consul
+[![Build Status](https://travis-ci.org/cmacrae/ansible-consul.svg?branch=master)](https://travis-ci.org/cmacrae/ansible-consul)
 A no nonsense Ansible role to deploy and configure [Consul](https://consul.io)
 
 ## Features
