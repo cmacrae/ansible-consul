@@ -1,11 +1,11 @@
 ---
 
-- name: Reload Consul service config
-  systemd:
-    name: consul
-    daemon_reload: true
-
 - name: Restart Consul service
   service:
     name: consul
     state: restarted
+
+- name: Reload Consul service
+  service:
+    name: consul
+    state: reloaded

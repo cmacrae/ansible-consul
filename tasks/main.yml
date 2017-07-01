@@ -51,6 +51,8 @@
       owner: "{{ consul_user_name }}"
       group: "{{ consul_group_name }}"
       validate: "{{ consul_user_home }}/bin/consul configtest -config-file %s"
+    notify:
+      - Reload Consul service
     
   - name: Deploy Consul service manifest
     template:
@@ -59,11 +61,15 @@
       owner: root
       group: root
       mode: 0600
+    register: consul_svc_manifest
     notify:
-      - Reload Consul service config
       - Restart Consul service
 
-  - meta: flush_handlers
+  - name: Reload Consul service config
+    systemd:
+      name: consul
+      daemon_reload: true
+    when: consul_svc_manifest.changed
 
   - name: Ensure the Consul service is running and enabled on boot
     service:
