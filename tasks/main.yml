@@ -6,7 +6,7 @@
       gid: "{{ consul_group_gid }}"
       system: true
       state: present
-           
+
   - name: Ensure Consul service user exists
     user:
       name: "{{ consul_user_name }}"
@@ -20,7 +20,7 @@
     package:
       name: unzip
       state: present
- 
+
   - name: Ensure Consul directory structure is configured
     file:
       path: "{{ item }}"
@@ -44,14 +44,10 @@
     become_user: "{{ consul_user_name }}"
     when: not consul_bin.stat.exists
 
-  - name: Deploy Consul service configuration
-    template:
-      src: "{{ consul_config_src }}"
-      dest: "{{ consul_config_dir}}/main.json"
-      owner: "{{ consul_user_name }}"
-      group: "{{ consul_group_name }}"
-      validate: "{{ consul_user_home }}/bin/consul configtest -config-file %s"
-    
+  - include: config.yml
+    with_dict: "{{  consul_configs  }}"
+    tags: config
+
   - name: Deploy Consul service manifest
     template:
       src: "{{ consul_service_file.src }}"
