@@ -1,4 +1,5 @@
 ---
+consul_packer_provision: false
 consul_group_name: consul
 consul_group_gid: 3000
 consul_user_name: consul

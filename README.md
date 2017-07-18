@@ -37,6 +37,9 @@ Consul, for what it does, is fantastically simple to configure and spin up - as 
 The main tasks file is only just over 70 lines, including whitespace. And the main configuration template? 1 line.  
 Keeping this role simple allows it to be very flexible and easy to integrate with anything else you might want to.
 
+### Packer provisioning support
+A very simple, but handy feature of this role is the ability to set `consul_packer_provision` to `true` (`false` by default). When this is `true`, during the Ansible run, it won't start the Consul service. This exists so that you can place values into your configuration that may not be valid, intended to be used when producing machine images of some sort with Packer, intended to be substituted later on by way of some sort of launch configuration/user script/user data.  
+
 ## Requirements
 This role has only been tested on Ubuntu 16.04, but should be expected to work on any Linux distro which runs `systemd` and has an `unzip` package available.
 
