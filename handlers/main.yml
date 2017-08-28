@@ -1,11 +1,12 @@
 ---
-
 - name: Restart Consul service
   service:
     name: consul
     state: restarted
+  when: not consul_packer_provision
 
 - name: Reload Consul service
   service:
     name: consul
     state: reloaded
+  when: not consul_packer_provision

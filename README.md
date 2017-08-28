@@ -8,18 +8,19 @@ Configuration for the Consul service is done using YAML to JSON conversion, so y
 ```yaml
 consul_master_token: myToken
 consul_server: true
-consul_config:
-  acl_datacenter: pantheon
-  acl_master_token: "{{ consul_master_token | to_uuid }}"
-  bootstrap: true
-  bind_addr: 0.0.0.0
-  client_addr: 0.0.0.0
-  datacenter: pantheon
-  data_dir: "{{ consul_data_dir }}"
-  log_level: INFO
-  node_name: master
-  server: "{{ consul_server }}"
-  ui: true
+consul_configs:
+  main:
+    acl_datacenter: pantheon
+    acl_master_token: "{{ consul_master_token | to_uuid }}"
+    bootstrap: true
+    bind_addr: 0.0.0.0
+    client_addr: 0.0.0.0
+    datacenter: pantheon
+    data_dir: "{{ consul_data_dir }}"
+    log_level: INFO
+    node_name: master
+    server: "{{ consul_server }}"
+    ui: true
 ```
 This is done using Jinja2 filters. This role implements no preconfigured entries for configuration, so rather than write your Consul's configuration in JSON; you simply express it in YAML's equivilent syntax, which means it can sit anywhere in your Ansible configuration.  
 As seen in the above example, this can be quite powerful, as it allows you to leverage other filters available in Ansible to construct arbitrary data and use it in the configuration. Anything you can express with Ansible's templating (including fetching data/host information from the inventory, etc.) can be used in the configuration.  
@@ -27,11 +28,17 @@ As seen in the above example, this can be quite powerful, as it allows you to le
 The above example configuration shows simple string key/value pairs, but you can of course define any valid type in YAML, such as dictionaries, and lists.  
 If you don't know how to express your Consul's JSON configuration as YAML, see [here for a handy converter](https://www.json2yaml.com/).  
 
+### Multiple configuration file deployments
+As shown in the above example, the `consul_configs` variable has a `main` dict. As you might have guessed; you can define multiple dicts of configuration. These are then deployed to files named after their parent key in the `conf.d` directory.  
+
 ### KISS
 Not really sure this should be listed as a feature... but I deem it valuable.  
 Consul, for what it does, is fantastically simple to configure and spin up - as such, it deserves an equally simple Ansible role.  
 The main tasks file is only just over 70 lines, including whitespace. And the main configuration template? 1 line.  
 Keeping this role simple allows it to be very flexible and easy to integrate with anything else you might want to.
+
+### Packer provisioning support
+A very simple, but handy feature of this role is the ability to set `consul_packer_provision` to `true` (`false` by default). When this is `true`, during the Ansible run, it won't start the Consul service. This exists so that you can place values into your configuration that may not be valid, intended to be used when producing machine images of some sort with Packer, intended to be substituted later on by way of some sort of launch configuration/user script/user data.  
 
 ## Requirements
 This role has only been tested on Ubuntu 16.04, but should be expected to work on any Linux distro which runs `systemd` and has an `unzip` package available.

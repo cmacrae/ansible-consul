@@ -1,0 +1,16 @@
+---
+- set_fact:
+    template_dest: "{{ item.key }}"
+    consul_config: "{{ item.value }}"
+
+- set_fact:
+    consul_config_validate: "test -f %s"
+  when: consul_packer_provision
+
+- name: Deploy Consul service configuration
+  template:
+    src: "{{ consul_config_src }}"
+    dest: "{{ consul_config_dir}}/{{ template_dest }}.json"
+    owner: "{{ consul_user_name }}"
+    group: "{{ consul_group_name }}"
+    validate: "{{ consul_config_validate }}"

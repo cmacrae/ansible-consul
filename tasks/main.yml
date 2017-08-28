@@ -6,7 +6,7 @@
       gid: "{{ consul_group_gid }}"
       system: true
       state: present
-           
+
   - name: Ensure Consul service user exists
     user:
       name: "{{ consul_user_name }}"
@@ -20,7 +20,7 @@
     package:
       name: unzip
       state: present
- 
+
   - name: Ensure Consul directory structure is configured
     file:
       path: "{{ item }}"
@@ -54,6 +54,10 @@
     notify:
       - Reload Consul service
     
+  - include: config.yml
+    with_dict: "{{  consul_configs  }}"
+    tags: config
+
   - name: Deploy Consul service manifest
     template:
       src: "{{ consul_service_file.src }}"
@@ -71,8 +75,13 @@
       daemon_reload: true
     when: consul_svc_manifest.changed
 
-  - name: Ensure the Consul service is running and enabled on boot
+  - name: Ensure the Consul service is running
     service:
       name: consul
       state: started
+    when: not consul_packer_provision
+
+  - name: Ensure the Consul service is enabled on boot
+    service:
+      name: consul
       enabled: yes
