@@ -14,3 +14,5 @@
     owner: "{{ consul_user_name }}"
     group: "{{ consul_group_name }}"
     validate: "{{ consul_config_validate }}"
+  notify:
+    - Reload Consul service

@@ -44,17 +44,7 @@
     become_user: "{{ consul_user_name }}"
     when: not consul_bin.stat.exists
 
-  - name: Deploy Consul service configuration
-    template:
-      src: "{{ consul_config_src }}"
-      dest: "{{ consul_config_dir}}/main.json"
-      owner: "{{ consul_user_name }}"
-      group: "{{ consul_group_name }}"
-      validate: "{{ consul_user_home }}/bin/consul configtest -config-file %s"
-    notify:
-      - Reload Consul service
-    
-  - include: config.yml
+ - include: config.yml
     with_dict: "{{  consul_configs  }}"
     tags: config
 
