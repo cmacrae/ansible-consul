@@ -44,7 +44,7 @@
     become_user: "{{ consul_user_name }}"
     when: not consul_bin.stat.exists
 
- - include: config.yml
+  - include: config.yml
     with_dict: "{{  consul_configs  }}"
     tags: config
 
