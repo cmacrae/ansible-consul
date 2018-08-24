@@ -7,11 +7,11 @@ consul_user_uid: 3000
 consul_user_home: /opt/consul
 consul_config_dir: "{{ consul_user_home }}/conf.d"
 consul_data_dir: "{{ consul_user_home }}/data"
-consul_version: 1.0.1
+consul_version: 1.0.7
 consul_server: false
 consul_uri: "https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_linux_amd64.zip"
 consul_config_src: main.json.j2
-consul_config_validate: "{{ consul_user_home }}/bin/consul validate %s"
+consul_config_validate: "{{ consul_user_home }}/bin/consul validate -config-format=json %s"
 consul_extra_args: []
 consul_service_file:
   src: consul.service.j2
